@@ -1714,6 +1714,35 @@ body {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
+#barra-conservacion {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.estado-item {
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  width: 160px;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  opacity: 0.6;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.estado-activo {
+  opacity: 1;
+  transform: scale(1.05);
+  font-weight: bold;
+  border: 2px solid #fff;
+}
+
+
+
 /* Responsive */
 @media (max-width: 1024px) {
   .mapa-grid {
