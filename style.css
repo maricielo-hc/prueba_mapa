@@ -11,6 +11,13 @@ body {
   padding-top: 80px; /* Para compensar el header fixed */
 }
 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+
 /* ======= HEADER & MENÚ ======= */
 .header {
   background: linear-gradient(135deg, #6e48aa 0%, #9d50bb 100%);
