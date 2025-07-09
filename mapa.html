@@ -231,14 +231,19 @@
     const capaSismos = L.layerGroup();
 
     const iconoIncendio = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/482/482598.png',
-      iconSize: [25, 25]
+      iconUrl: 'imagenes/img_incendio.png',
+      iconSize: [24, 24],         // puedes ajustar esto
+      iconAnchor: [12, 12],       // centro del ícono
+      popupAnchor: [0, -10]       // ubicación del popup
     });
 
     const iconoSismo = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/482/482599.png',
-      iconSize: [25, 25]
+      iconUrl: 'imagenes/img_sismo.png',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -10]
     });
+
 
     eventosNaturales.forEach(evento => {
       if (
