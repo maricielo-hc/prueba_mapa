@@ -1,251 +1,234 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>Mapa de Perú - Especies y Eventos Naturales</title>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Estilos -->
-  <link rel="stylesheet" href="css/estilos.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+  <title>GeoVida</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
 
-  <h2>Mapa de Perú - Especies en Extinción y Eventos Naturales</h2>
+  <header class="header">
+    <div class="menu container">
+      <a href="index.html" class="logo">GeoVida</a>
+      <input type="checkbox" id="menu" />
+      <label for="menu">
+        <img src="imagenes/menu.png" class="menu-icono" alt="menu" />
+      </label>
+      <nav class="navbar">
+        <ul>
+          <li><a href="index.html" class="active">Inicio</a></li>
+          <li><a href="estadisticas.html">Estadísticas</a></li>
+          <li><a href="mapa.html">Mapa</a></li>
+          <li><a href="organizaciones.html">Organizaciones</a></li>
+          <li><a href="articulos.html">Artículos</a></li>
+          <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <select id="selector" style="width: 80%;">
-    <option value="">-- Selecciona una especie --</option>
-  </select>
+  <section class="header-content container">
+    <div class="header-txt">
+      <h1>Protege a los <span>animales</span><br />en peligro de extinción</h1>
+      <p>
+        Cada año, cientos de especies desaparecen debido a la destrucción de su hábitat, la contaminación y el cambio climático.
+        En <strong>GeoVida</strong> te invitamos a conocerlas, ubicarlas en el mapa y sumarte a las iniciativas que trabajan por su conservación.
+      </p>
+      <div class="butons">
+        <a href="mapa.html" class="btn-1">Ver Mapa</a>
+        <a href="organizaciones.html" class="btn-1">Iniciativas</a>
+      </div>
+    </div>
+  </section>
 
-  <div id="map"></div>
-  <div id="descripcion"></div>
+  <section class="species-section">
+    <div class="container">
+      <h2>Especies en Peligro</h2>
 
-  <!-- Panel lateral de eventos -->
-  <div id="panel-eventos">
-    <h4>Eventos climáticos</h4>
-    <button id="btn-incendios">🔥 Incendios</button>
-    <button id="btn-sismos">🌋 Sismos</button>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre común o científico..." />
+        <button id="searchButton">Buscar</button>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel" id="speciesCarousel">
+          <!-- Las tarjetas se generan dinámicamente -->
+        </div>
+        <button class="carousel-button prev">❮</button>
+        <button class="carousel-button next">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGUNDO CARRUSEL (ESPECIES EXTINTAS MODIFICADO) -->
+  
+  <section class="extinct-section">
+  <div class="container">
+    <h2 class="extinct-title">Especies Extintas <span>en los últimos años</span></h2>
+    <p class="section-subtitle">Últimas especies desaparecidas en la era moderna</p>
+
+    <div class="carousel-container">
+      <div class="carousel-extinct" id="extinctCarousel">
+        <!-- Las tarjetas de animales extintos se generan dinámicamente -->
+      </div>
+      <button class="carousel-button-extinct prev">❮</button>
+      <button class="carousel-button-extinct next">❯</button>
+
+    </div>
   </div>
+</section>
 
-  <!-- Librerías -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-  <script src="js/especies_nom_coord.js"></script>
-  <script src="js/especies_peligro.js"></script>
-  <script src="js/eventos_naturales.js"></script>
-
+  <!-- SCRIPTS -->
+  <script src="especies_traducidas.js"></script>
+  <script src="animales_extintos.js"></script>
+  <script src="script_extintos.js"></script>
   <script>
-    const bounds = L.latLngBounds([[-19, -82], [0, -68]]);
-    const map = L.map('map', {
-      center: [-9.2, -75],
-      zoom: 6,
-      minZoom: 5,
-      maxZoom: 10,
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+      const carousel = document.getElementById('speciesCarousel');
+      const prevButton = document.querySelector('.prev');
+      const nextButton = document.querySelector('.next');
+      const searchInput = document.getElementById('searchInput');
+      const searchButton = document.getElementById('searchButton');
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+      function renderSpeciesCards(speciesArray) {
+        carousel.innerHTML = '';
+        speciesArray.forEach(species => {
+          const card = document.createElement('div');
+          card.className = 'species-card';
 
-    let capas = [];
+          card.innerHTML = `
+            <img src="${species.imagen}" alt="${species.nombre_comun_es || species.nombre_comun}" class="species-img">
+            <div class="species-info">
+              <h3 class="species-name">${species.nombre_comun_es || species.nombre_comun}</h3>
+              <p class="species-scientific">${species.nombre_cientifico}</p>
+              <span class="species-status">${species.estado}</span>
+              <p class="species-description">${species.descripcion}</p>
+            </div>
+          `;
 
-    function limpiarCapas() {
-      capas.forEach(capa => map.removeLayer(capa));
-      capas = [];
-    }
-
-    function mostrarEspecieDensidad(nombreComun) {
-      limpiarCapas();
-
-      const especie = especiesNomCoord.find(e => e.nombre_comun === nombreComun);
-      if (!especie || !especie.coordenadas.length) {
-        document.getElementById("descripcion").innerHTML = `
-          <table style="margin: 20px auto; border-collapse: collapse; border: 1px solid #ccc;">
-            <tr style="background-color: #f9f9f9;">
-              <td style="padding: 10px; border: 1px solid #ccc;">
-                <strong>No se encontraron registros recientes para esta especie en Perú.</strong><br>
-                Esto puede indicar que está en situación crítica o que su monitoreo ha sido limitado.
-              </td>
-            </tr>
-          </table>
-        `;
-        return;
+          carousel.appendChild(card);
+        });
       }
 
-      const puntos = especie.coordenadas.map(coord => [coord.lat, coord.lon]);
+      function searchSpecies() {
+        const term = searchInput.value.toLowerCase();
+        const results = term
+          ? especies.filter(s =>
+              (s.nombre_comun_es && s.nombre_comun_es.toLowerCase().includes(term)) ||
+              s.nombre_comun.toLowerCase().includes(term) ||
+              s.nombre_cientifico.toLowerCase().includes(term))
+          : [...especies];
 
-      const heat = L.heatLayer(puntos, {
-        radius: 20,
-        blur: 15,
-        maxZoom: 10,
-        gradient: { 0.4: 'blue', 0.65: 'lime', 1: 'red' }
-      }).addTo(map);
-
-      capas.push(heat);
-      map.setView(puntos[0], 7);
-
-      cargarDescripcion(especie.nombre_cientifico, especie.nombre_comun);
-    }
-
-    function obtenerEstadoDesdeLocal(nombreCientifico) {
-      const especie = especiesEnPeligro.find(e => e.nombre_cientifico === nombreCientifico);
-      return especie?.estado || "";
-    }
-
-    function construirBarraEstadoDesdeTexto(estadoTexto) {
-      const colores = {
-        "En peligro crítico": "#d9534f",
-        "En peligro": "#f0ad4e",
-        "Vulnerable": "#f7e04c",
-        "Casi amenazado": "#5bc0de"
-      };
-      const codigos = {
-        "En peligro crítico": "CR",
-        "En peligro": "EN",
-        "Vulnerable": "VU",
-        "Casi amenazado": "NT"
-      };
-
-      const estadoActual = codigos[estadoTexto];
-
-      let html = '<div id="barra-conservacion">';
-      Object.entries(colores).forEach(([nombre, color]) => {
-        const codigo = codigos[nombre];
-        const activo = (codigo === estadoActual) ? "estado-activo" : "";
-        html += `
-          <div class="estado-item ${activo}" style="background-color:${color};">
-            <strong>${codigo}</strong><br>${nombre}
-          </div>
-        `;
-      });
-      html += '</div>';
-      return html;
-    }
-
-    async function cargarDescripcion(nombreCientifico, nombreComun) {
-      const descDiv = document.getElementById("descripcion");
-      const wikiURL = `https://es.wikipedia.org/api/rest_v1/page/summary/${nombreCientifico.replace(/ /g, "_")}`;
-
-      const estadoTexto = obtenerEstadoDesdeLocal(nombreCientifico);
-      const estadoHTML = construirBarraEstadoDesdeTexto(estadoTexto);
-
-      try {
-        const res = await fetch(wikiURL);
-        const data = await res.json();
-        const descripcion = data.extract;
-        const imagen = data.thumbnail ? data.thumbnail.source : null;
-
-        descDiv.innerHTML = `
-          <h3>${nombreComun}</h3>
-          <p><i>${nombreCientifico}</i></p>
-          ${estadoHTML}
-          ${imagen ? `<img src="${imagen}" alt="${nombreComun}">` : ""}
-          <p>${descripcion}</p>
-        `;
-      } catch (e) {
-        descDiv.innerHTML = `
-          <h3>${nombreComun}</h3>
-          <p><i>${nombreCientifico}</i></p>
-          ${estadoHTML}
-          <p style="color:#777;">No se encontró una descripción en Wikipedia.</p>
-        `;
+        renderSpeciesCards(results);
       }
-    }
 
-    const selector = document.getElementById('selector');
-    especiesEnPeligro.forEach(e => {
-      const especie = especiesNomCoord.find(x => x.nombre_cientifico === e.nombre_cientifico);
-      if (especie && especie.nombre_comun && especie.nombre_comun.trim() !== "") {
-        const option = document.createElement('option');
-        option.value = especie.nombre_comun;
-        option.textContent = especie.nombre_comun;
-        selector.appendChild(option);
-      }
-    });
-
-    $(document).ready(() => {
-      $('#selector').select2({
-        placeholder: "-- Selecciona una especie --",
-        width: '80%'
+      searchButton.addEventListener('click', searchSpecies);
+      searchInput.addEventListener('keyup', function (e) {
+        if (e.key === 'Enter') searchSpecies();
       });
 
-      $('#selector').on('change', e => {
-        const seleccionada = e.target.value;
-        if (seleccionada) {
-          mostrarEspecieDensidad(seleccionada);
-        } else {
-          limpiarCapas();
-          map.setView([-9.2, -75], 6);
-          document.getElementById("descripcion").innerHTML = "";
-        }
+      prevButton.addEventListener('click', () => {
+        carousel.scrollBy({ left: -300, behavior: 'smooth' });
       });
-    });
 
-    const capaIncendios = L.layerGroup();
-    const capaSismos = L.layerGroup();
+      nextButton.addEventListener('click', () => {
+        carousel.scrollBy({ left: 300, behavior: 'smooth' });
+      });
 
-    const iconoIncendio = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/482/482598.png',
-      iconSize: [25, 25]
-    });
+      renderSpeciesCards(especies);
 
-    const iconoSismo = L.icon({
-      iconUrl: 'https://cdn-icons-png.flaticon.com/512/482/482599.png',
-      iconSize: [25, 25]
-    });
+      // Carrusel especies extintas
+      const extinctCarousel = document.getElementById('extinctCarousel');
+      const extinctCarouselContainer = document.getElementById('extinctCarouselContainer');
 
-    eventosNaturales.forEach(evento => {
-      if (
-        typeof evento.lat !== "number" ||
-        typeof evento.lon !== "number" ||
-        isNaN(evento.lat) ||
-        isNaN(evento.lon)
-      ) return;
+      function renderExtinctCards() {
+        extinctCarousel.innerHTML = '';
 
-      if (evento.tipo === "Incendio") {
-        const popup = `
-          <strong>🔥 Incendio forestal</strong><br>
-          Fecha: ${evento.fecha} ${evento.hora}<br>
-          Intensidad: ${evento.intensidad}
-        `;
-        L.marker([evento.lat, evento.lon], { icon: iconoIncendio }).bindPopup(popup).addTo(capaIncendios);
+        animalesExtintos.forEach((especie) => {
+          const card = document.createElement('div');
+          card.className = 'extinct-card';
+
+          let imagenUrl = especie.imagen;
+          if (imagenUrl.includes('wikimedia') && imagenUrl.includes('/thumb/')) {
+            imagenUrl = imagenUrl.replace('/thumb/', '/').split('/').slice(0, -1).join('/');
+          }
+
+          card.innerHTML = `
+            <div class="extinct-img-container">
+              <img src="${imagenUrl}" alt="${especie.nombre_comun}" class="extinct-img" 
+                   onerror="this.src='imagenes/default-extinct.jpg'; this.style.objectFit='contain'; this.style.padding='20px';">
+              <div class="extinct-year-marker" style="position:absolute; top:10px; right:10px; background:#e74c3c; color:#fff; border-radius:50%; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-weight:bold;">${especie.año_extincion}</div>
+            </div>
+            <div class="extinct-info">
+              <h3 class="extinct-name">${especie.nombre_comun}</h3>
+              <p class="extinct-scientific">${especie.nombre_cientifico}</p>
+              <div class="extinct-details">
+                <div class="detail-item">
+                  <span class="detail-label">Ubicación:</span>
+                  <span class="detail-value">${especie.lugar}</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Causa probable:</span>
+                  <span class="detail-value">${getRandomCause()}</span>
+                </div>
+              </div>
+            </div>
+          `;
+
+          extinctCarousel.appendChild(card);
+        });
+
+        setupDragScroll();
       }
 
-      if (evento.tipo === "Sismo") {
-        const popup = `
-          <strong>🌋 Sismo</strong><br>
-          Lugar: ${evento.lugar}<br>
-          Fecha: ${new Date(evento.fecha).toLocaleString()}<br>
-          Magnitud: ${evento.magnitud}
-        `;
-        L.marker([evento.lat, evento.lon], { icon: iconoSismo }).bindPopup(popup).addTo(capaSismos);
+      function getRandomCause() {
+        const causes = [
+          "Pérdida de hábitat",
+          "Caza excesiva",
+          "Contaminación",
+          "Cambio climático",
+          "Especies invasoras",
+          "Enfermedades",
+          "Deforestación"
+        ];
+        return causes[Math.floor(Math.random() * causes.length)];
       }
-    });
 
-    document.getElementById("btn-incendios").addEventListener("click", function () {
-      if (map.hasLayer(capaIncendios)) {
-        map.removeLayer(capaIncendios);
-        this.classList.remove("active");
-      } else {
-        map.addLayer(capaIncendios);
-        this.classList.add("active");
-      }
-    });
+      function setupDragScroll() {
+        let isDragging = false;
+        let startX, startScroll;
 
-    document.getElementById("btn-sismos").addEventListener("click", function () {
-      if (map.hasLayer(capaSismos)) {
-        map.removeLayer(capaSismos);
-        this.classList.remove("active");
-      } else {
-        map.addLayer(capaSismos);
-        this.classList.add("active");
+        extinctCarouselContainer.addEventListener('mousedown', (e) => {
+          isDragging = true;
+          startX = e.pageX;
+          startScroll = extinctCarousel.scrollLeft;
+          extinctCarouselContainer.style.cursor = 'grabbing';
+        });
+
+        extinctCarouselContainer.addEventListener('mousemove', (e) => {
+          if (!isDragging) return;
+          const x = e.pageX;
+          const walk = (x - startX) * 2;
+          extinctCarousel.scrollLeft = startScroll - walk;
+        });
+
+        extinctCarouselContainer.addEventListener('mouseup', () => {
+          isDragging = false;
+          extinctCarouselContainer.style.cursor = 'grab';
+        });
+
+        extinctCarouselContainer.addEventListener('mouseleave', () => {
+          isDragging = false;
+        });
       }
+
+      renderExtinctCards();
     });
   </script>
+  <script src="script.js"></script>
+  <script src="articulos.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
