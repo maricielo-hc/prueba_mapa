@@ -1724,21 +1724,38 @@ body {
 
 .estado-item {
   color: white;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 12px;
   width: 160px;
   text-align: center;
-  font-size: 0.9rem;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
-  opacity: 0.6;
-  transition: transform 0.3s, opacity 0.3s;
+  font-size: 1rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  filter: grayscale(100%) brightness(0.7);
+  opacity: 0.5;
+  transition: all 0.3s ease;
 }
 
+/* Cuadro resaltado para el estado activo */
 .estado-activo {
   opacity: 1;
-  transform: scale(1.05);
+  filter: none;
+  transform: scale(1.08);
   font-weight: bold;
-  border: 2px solid #fff;
+  border: 3px solid #000; /* marco oscuro para contraste */
+  background-blend-mode: multiply;
+  color: #111; /* texto negro fuerte */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.species-img,
+.extinct-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  background-color: #f3f3f3;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 
