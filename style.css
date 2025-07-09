@@ -1714,6 +1714,19 @@ body {
   background: linear-gradient(135deg, #e74c3c, #c0392b);
 }
 
+.species-img,
+.extinct-img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain; /* Cambiado de 'cover' a 'contain' para PNG con transparencia */
+  background-color: #f2f2f2; /* Fondo claro para que se vea bien el PNG transparente */
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+
 #barra-conservacion {
   display: flex;
   justify-content: space-around;
@@ -1743,7 +1756,7 @@ body {
   font-weight: bold;
   border: 3px solid #000; /* marco oscuro para contraste */
   background-blend-mode: multiply;
-  color: #111; /* texto negro fuerte */
+  color: #000000; /* texto negro fuerte */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
