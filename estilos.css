@@ -1,0 +1,145 @@
+/* ================ ESTILOS PARA PÁGINA DE MAPA ================ */
+.mapa-container {
+  padding: 40px 20px;
+}
+
+.mapa-title {
+  font-family: 'Playfair Display', serif;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.mapa-subtitle {
+  color: #6e48aa;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+}
+
+.mapa-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.mapa-selector {
+  margin-bottom: 25px;
+}
+
+.mapa-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  gap: 30px;
+}
+
+.mapa-col {
+  position: relative;
+}
+
+#map {
+  height: 600px;
+  width: 100%;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border: 2px solid #6e48aa;
+}
+
+.descripcion-col {
+  background: #f9f9f9;
+  border-radius: 15px;
+  padding: 20px;
+  height: 600px;
+  overflow-y: auto;
+}
+
+.descripcion-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  color: #555;
+}
+
+.descripcion-placeholder img {
+  max-width: 200px;
+  margin-bottom: 20px;
+  opacity: 0.8;
+}
+
+.descripcion-placeholder h3 {
+  color: #6e48aa;
+  margin-bottom: 15px;
+}
+
+/* Panel de eventos */
+#panel-eventos {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  width: 180px;
+}
+
+#panel-eventos h4 {
+  color: #6e48aa;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+#panel-eventos button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #6e48aa, #9d50bb);
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+}
+
+#panel-eventos button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+
+#panel-eventos button.active {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .mapa-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  #map, .descripcion-col {
+    height: 450px;
+  }
+  
+  .descripcion-col {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .mapa-title {
+    font-size: 2rem;
+  }
+  
+  #panel-eventos {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
