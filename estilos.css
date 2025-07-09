@@ -1,0 +1,157 @@
+/* === GENERAL === */
+body {
+  font-family: sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  background-color: #fefefe;
+}
+
+/* === MAPA === */
+#map {
+  width: 600px;
+  height: 600px;
+  margin: auto;
+  border: 2px solid #333;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* === SELECTOR DE ESPECIES === */
+#selector {
+  margin: 15px auto;
+  font-size: 16px;
+  padding: 5px;
+  width: 80%;
+}
+
+/* === DESCRIPCIÓN === */
+#descripcion {
+  max-width: 600px;
+  margin: 20px auto;
+  font-size: 16px;
+  text-align: left;
+  padding: 10px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+#descripcion img {
+  max-width: 100%;
+  height: auto;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+/* === BARRA DE ESTADO DE CONSERVACIÓN === */
+#barra-conservacion {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 15px auto;
+}
+
+.estado-item {
+  width: 100px;
+  padding: 8px;
+  text-align: center;
+  border-radius: 8px;
+  color: white;
+  font-size: 13px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  opacity: 0.5;               /* 🔸 Apagado por defecto */
+  filter: grayscale(50%);     /* 🔸 Le da ese tono medio plomizo */
+  transition: all 0.3s ease;
+}
+
+/* Estilo del cuadrado activo */
+.estado-activo {
+  opacity: 1;                      /* 🔹 Totalmente visible */
+  filter: none;                    /* 🔹 Sin gris, a color completo */
+  transform: scale(1.1);
+  border: 3px solid #222;
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(0,0,0,0.4);
+}
+
+
+.estado-item strong {
+  display: block;
+  font-size: 16px;
+}
+
+.estado-activo {
+  opacity: 1;
+  transform: scale(1.1);
+  font-weight: bold;
+  border: 2px solid #fff;
+}
+
+
+/* === PANEL LATERAL DE EVENTOS CLIMÁTICOS === */
+#panel-eventos {
+  position: absolute;
+  top: 110px;
+  right: 20px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 10px 12px;
+  z-index: 999;
+  width: 140px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+#panel-eventos h4 {
+  margin: 0 0 10px;
+  font-size: 14px;
+}
+
+#panel-eventos button {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid #999;
+  background-color: #f4f4f4;
+  transition: background 0.3s;
+}
+
+#panel-eventos button:hover {
+  background-color: #e0e0e0;
+}
+
+#panel-eventos button.active {
+  background-color: #d1eaff;
+  border-color: #1a73e8;
+  font-weight: bold;
+}
+
+/* === MARCADORES DE EVENTOS CLIMÁTICOS (ANIMADOS) === */
+.marcador-clima {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  animation: pulso 1.5s infinite;
+  opacity: 0.9;
+}
+
+.incendio {
+  background: orange;
+  box-shadow: 0 0 10px orange;
+}
+
+.sismo {
+  background: royalblue;
+  box-shadow: 0 0 10px royalblue;
+}
+
+@keyframes pulso {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.5); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 0.9; }
+}
